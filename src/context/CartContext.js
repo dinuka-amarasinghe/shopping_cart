@@ -1,5 +1,5 @@
 import {createContext, useState} from "react";
-import {productsArray} from "../productsStore.js";
+import {getProductData} from "../productsStore.js";
 
 export const CartContext = createContext({
     items: [],
@@ -33,11 +33,10 @@ export function CartProvider({children}) {
             setCartProducts([...cartProducts, {id, quantity: 1}]);
         } else { //Product is not in cart
             setCartProducts(cartProducts.map(
-                    product => product.id === id
-                        ? {...product, quantity: product.quantity + 1} :
-                        product
-                )
-            )
+                product => product.id === id
+                    ? {...product, quantity: product.quantity + 1} :
+                    product
+            ))
         }
     }
 
@@ -48,20 +47,27 @@ export function CartProvider({children}) {
             deleteFromCart(id);
         } else {
             setCartProducts(cartProducts.map(
-                    product => product.id === id
-                        ? {...product, quantity: product.quantity - 1} :
-                        product
-                )
-            )
+                product => product.id === id
+                    ? {...product, quantity: product.quantity - 1} :
+                    product
+            ))
         }
     }
 
     function deleteFromCart(id) {
         setCartProducts(cartProducts.filter(currentProduct => {
-                    return currentProduct.id !== id;
-                }
-            )
+                return currentProduct.id !== id;
+            })
         );
+    }
+
+    function getTotalCost() {
+        let totalCost = 0;
+        cartProducts.map((cartItem) => {
+            const productData = getProductData(cartItem.id);
+            totalCost += (productData.price * cartItem.quantity);
+        })
+        return totalCost;
     }
 
     const contextValue = {
@@ -79,4 +85,6 @@ export function CartProvider({children}) {
         </CartContext.Provider>
     )
 }
+
+export default CartProvider;
 
