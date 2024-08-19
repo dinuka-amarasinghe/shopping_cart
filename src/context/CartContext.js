@@ -41,6 +41,14 @@ export function CartProvider({children}) {
         }
     }
 
+    function deleteFromCart(id) {
+        setCartProducts(cartProducts.filter(currentProduct => {
+                    return currentProduct.id !== id;
+                }
+            )
+        );
+    }
+
     const contextValue = {
         items: [],
         getProductQuantity,
