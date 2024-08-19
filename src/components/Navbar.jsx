@@ -1,12 +1,14 @@
 import {Button, Container, Navbar, Modal} from 'react-bootstrap';
-import {useState} from "react";
+import {useState, useContext} from "react";
+import {CartContext} from "../context/CartContext.jsx";
 
 function NavbarComponent() {
     const [show, setShow] = useState(false);
-
     const handleClose = () => setShow(false);
-
     const handleShow = () => setShow(true);
+    const cart = useContext(CartContext);
+
+    const productsCount = cart.items.reduce((sum, product) => sum + product.quantity, 0);
 
     return (
         <>
