@@ -26,6 +26,20 @@ export function CartProvider({children}) {
         }
     }
 
+    function addOneToCart(id) {
+        const quantity = getProductQuantity(id);
+
+        if (quantity === 0) { //Product is not in cart
+            setCartProducts([...cartProducts, {id, quantity: 1}]);
+        } else { //Product is not in cart
+            setCartProducts(cartProducts.map(
+                    product => product.id === id
+                        ? {...product, quantity: product.quantity + 1} :
+                        product
+                )
+            )
+        }
+    }
 
     const contextValue = {
         items: [],
