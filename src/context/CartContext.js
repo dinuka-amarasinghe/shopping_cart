@@ -41,6 +41,21 @@ export function CartProvider({children}) {
         }
     }
 
+    function removeOneFromCart(id) {
+        const quantity = getProductQuantity(id);
+
+        if (quantity === 1) {
+            deleteFromCart(id);
+        } else {
+            setCartProducts(cartProducts.map(
+                    product => product.id === id
+                        ? {...product, quantity: product.quantity - 1} :
+                        product
+                )
+            )
+        }
+    }
+
     function deleteFromCart(id) {
         setCartProducts(cartProducts.filter(currentProduct => {
                     return currentProduct.id !== id;
