@@ -1,12 +1,13 @@
-import js from '@eslint/js'
-import globals from 'globals'
-import react from 'eslint-plugin-react'
-import reactHooks from 'eslint-plugin-react-hooks'
-import reactRefresh from 'eslint-plugin-react-refresh'
+import js from '@eslint/js';
+import globals from 'globals';
+import react from 'eslint-plugin-react';
+import reactHooks from 'eslint-plugin-react-hooks';
+import reactRefresh from 'eslint-plugin-react-refresh';
 
 export default [
     {ignores: ['dist']},
     {
+        // React and browser-specific configuration
         files: ['**/*.{js,jsx}'],
         languageOptions: {
             ecmaVersion: 2020,
@@ -36,4 +37,19 @@ export default [
             ],
         },
     },
-]
+    {
+        // Node.js specific configuration
+        files: ['**/*.{js,jsx}'],
+        languageOptions: {
+            ecmaVersion: 2020,
+            globals: globals.node,  // Node.js globals
+            parserOptions: {
+                ecmaVersion: 'latest',
+                sourceType: 'module',
+            },
+        },
+        rules: {
+            'no-undef': 'off', // Disable `no-undef` for Node.js globals like `require`
+        },
+    },
+];
